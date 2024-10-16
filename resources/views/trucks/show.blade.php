@@ -14,20 +14,28 @@
                 <h5 class="card-title">Unit Number: {{ $truck->unit_number }}</h5>
                 <p class="card-text"><strong>Year:</strong> {{ $truck->year }}</p>
                 <p class="card-text"><strong>Notes:</strong> {{ $truck->notes ?? 'No additional notes' }}</p>
+
                 @if($truck->subunits->isNotEmpty())
                     <h6>Subunits:</h6>
                     <ul class="list-group">
                         @foreach($truck->subunits as $subunit)
                             <li class="list-group-item">
-                                <strong>Subunit:</strong> {{ $subunit->unit_number}}
+                                <strong>Subunit:</strong> {{ $subunit->unit_number }}
                                 <br>
-                                <strong>Start Date:</strong> {{ $subunit->pivot->start_date}}
+                                <strong>Start Date:</strong> {{ $subunit->pivot->start_date }}
                                 <br>
-                                <strong>End Date:</strong> {{ $subunit->pivot->end_date}}
+                                <strong>End Date:</strong> {{ $subunit->pivot->end_date }}
+
+                            <!-- Subunit Delete Form -->
+                                <form action="{{ route('trucks.removeSubunit', [$truck->id, $subunit->id]) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to remove this subunit?');">Remove Subunit</button>
+                                </form>
                             </li>
                         @endforeach
                     </ul>
-               @else
+                @else
                     <p>This truck has no assigned subunits.</p>
                 @endif
 
@@ -38,9 +46,9 @@
                             <li class="list-group-item">
                                 <strong>Main truck:</strong> {{ $mainTruck->unit_number }}
                                 <br>
-                                <strong>Start Date:</strong> {{ $mainTruck->pivot->start_date}}
+                                <strong>Start Date:</strong> {{ $mainTruck->pivot->start_date }}
                                 <br>
-                                <strong>End Date:</strong> {{ $mainTruck->pivot->end_date}}
+                                <strong>End Date:</strong> {{ $mainTruck->pivot->end_date }}
                             </li>
                         @endforeach
                     </ul>

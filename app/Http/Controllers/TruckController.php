@@ -106,4 +106,18 @@ class TruckController extends Controller
             'message' => 'Subunit assigned successfully!',
         ]);
     }
+
+    /**
+     * @param $truckId
+     * @param $subunitId
+     * @return mixed
+     */
+    public function removeSubunit($truckId, $subunitId): mixed
+    {
+        $truck = Truck::findOrFail($truckId);
+        $truck->subunits()->detach($subunitId);
+
+        return redirect()->route('trucks.show', $truckId)->with('success', 'Subunit removed successfully.');
+    }
+
 }
