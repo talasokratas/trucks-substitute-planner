@@ -76,7 +76,8 @@ class SubunitRequest extends FormRequest
         if ($subunitOverlap) {
             throw new HttpResponseException(response()->json([
                 'success' => false,
-                'errors' => 'Date range overlaps with an existing subunit assignment.',
+                'errors' => [
+                    'date_overlap' => 'Date range overlaps with an existing subunit assignment.'],
             ], 422));
         }
 
@@ -84,7 +85,7 @@ class SubunitRequest extends FormRequest
             throw new HttpResponseException(response()->json([
                 'success' => false,
                 'errors' => [
-                    'main_truck_active' => 'The selected truck cannot be assigned as a subunit during this period.',
+                    'main_truck_inactive' => 'The selected truck cannot be assigned as a subunit during this period.',
                 ]
             ], 422));
         }
