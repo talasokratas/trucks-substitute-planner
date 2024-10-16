@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\TruckRequest;
+use App\Models\Truck;
 
 class TruckController extends Controller
 {
@@ -11,7 +12,9 @@ class TruckController extends Controller
      */
     public function index()
     {
-        //
+        $trucks = Truck::all();
+
+        return view('trucks.index', compact('trucks'));
     }
 
     /**
@@ -19,15 +22,14 @@ class TruckController extends Controller
      */
     public function create()
     {
-        //
+        return view('trucks.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(TruckRequest $request)
     {
-        //
+        Truck::create($request->validated());
+
+        return redirect()->route('trucks.index')->with('success', 'Truck created successfully!');
     }
 
     /**
@@ -35,7 +37,9 @@ class TruckController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $truck = Truck::findOrFail($id);
+
+        return view('trucks.show', compact('truck'));
     }
 
     /**
@@ -43,15 +47,20 @@ class TruckController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $truck = Truck::findOrFail($id);
+
+        return view('trucks.edit', compact('truck'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(TruckRequest $request, $id)
     {
-        //
+        $truck = Truck::findOrFail($id);
+        $truck->update($request->validated());
+
+        return redirect()->route('trucks.index')->with('success', 'Truck updated successfully!');
     }
 
     /**
@@ -59,6 +68,9 @@ class TruckController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $truck = Truck::findOrFail($id);
+        $truck->delete();
+
+        return redirect()->route('trucks.index')->with('success', 'Truck deleted successfully');
     }
 }
