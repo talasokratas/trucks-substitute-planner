@@ -27,7 +27,7 @@
                                 <strong>End Date:</strong> {{ $subunit->pivot->end_date }}
 
                             <!-- Subunit Delete Form -->
-                                <form action="{{ route('trucks.removeSubunit', [$truck->id, $subunit->id]) }}" method="POST" style="display: inline;">
+                                <form action="{{ route('trucks.removeSubunit', [$truck->id, $subunit->id]) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to remove this subunit?');">Remove Subunit</button>
