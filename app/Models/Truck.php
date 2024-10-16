@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Truck extends Model
 {
     protected $fillable = ['unit_number', 'year', 'notes'];
+
     // A truck can have many subunits
     public function subunits()
     {
