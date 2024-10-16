@@ -15,22 +15,45 @@
                 <p class="card-text"><strong>Year:</strong> {{ $truck->year }}</p>
                 <p class="card-text"><strong>Notes:</strong> {{ $truck->notes ?? 'No additional notes' }}</p>
 
-                <!-- Subunits -->
                 @if($truck->subunits->isNotEmpty())
                     <h6>Subunits:</h6>
                     <ul class="list-group">
                         @foreach($truck->subunits as $subunit)
                             <li class="list-group-item">
-                                <strong>Subunit:</strong> {{ $subunit->subunit->unit_number }}
+                                <strong>Subunit:</strong> {{ $subunit->unit_number }}
                                 <br>
-                                <strong>Start Date:</strong> {{ $subunit->start_date->format('Y-m-d') }}
+                                <strong>Start Date:</strong> {{ $subunit->pivot->start_date }}
                                 <br>
-                                <strong>End Date:</strong> {{ $subunit->end_date->format('Y-m-d') }}
+                                <strong>End Date:</strong> {{ $subunit->pivot->end_date }}
+
+                            <!-- Subunit Delete Form -->
+                                <form action="{{ route('trucks.removeSubunit', [$truck->id, $subunit->id]) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to remove this subunit?');">Remove Subunit</button>
+                                </form>
                             </li>
                         @endforeach
                     </ul>
                 @else
                     <p>This truck has no assigned subunits.</p>
+                @endif
+
+                @if($truck->mainTrucks->isNotEmpty())
+                    <h6>Truck Assigned To:</h6>
+                    <ul class="list-group">
+                        @foreach($truck->mainTrucks as $mainTruck)
+                            <li class="list-group-item">
+                                <strong>Main truck:</strong> {{ $mainTruck->unit_number }}
+                                <br>
+                                <strong>Start Date:</strong> {{ $mainTruck->pivot->start_date }}
+                                <br>
+                                <strong>End Date:</strong> {{ $mainTruck->pivot->end_date }}
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <p>This truck is not assigned as subunit</p>
                 @endif
 
                 <div class="mt-3">
